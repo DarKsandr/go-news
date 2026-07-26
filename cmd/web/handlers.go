@@ -8,8 +8,8 @@ import (
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		files := []string{
-			"./ui/html/404.go.tpl",
-			"./ui/html/base.go.tpl",
+			"./ui/html/404.html",
+			"./ui/html/base.html",
 		}
 
 		w.WriteHeader(http.StatusNotFound)
@@ -21,8 +21,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	files := []string{
-		"./ui/html/index.go.tpl",
-		"./ui/html/base.go.tpl",
+		"./ui/html/index.html",
+		"./ui/html/base.html",
 	}
 
 	tmpl := template.Must(template.ParseFiles(files...))
@@ -31,8 +31,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 func ContactHandler(w http.ResponseWriter, r *http.Request) {
 	files := []string{
-		"./ui/html/contact.go.tpl",
-		"./ui/html/base.go.tpl",
+		"./ui/html/contact.html",
+		"./ui/html/base.html",
 	}
 
 	tmpl := template.Must(template.ParseFiles(files...))
