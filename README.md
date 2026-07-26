@@ -2,3 +2,5 @@
 ```
     go run ./cmd/web
 ```
+
+[Ссылка на шаблон](https://themewagon.com/themes/newsers/)
