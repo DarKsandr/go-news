@@ -7,7 +7,16 @@ import (
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		files := []string{
+			"./ui/html/404.go.tpl",
+			"./ui/html/base.go.tpl",
+		}
+
+		w.WriteHeader(http.StatusNotFound)
+
+		tmpl := template.Must(template.ParseFiles(files...))
+		tmpl.Execute(w, nil)
+
 		return
 	}
 
