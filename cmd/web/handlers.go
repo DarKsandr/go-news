@@ -28,3 +28,13 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles(files...))
 	tmpl.Execute(w, nil)
 }
+
+func ContactHandler(w http.ResponseWriter, r *http.Request) {
+	files := []string{
+		"./ui/html/contact.go.tpl",
+		"./ui/html/base.go.tpl",
+	}
+
+	tmpl := template.Must(template.ParseFiles(files...))
+	tmpl.Execute(w, nil)
+}

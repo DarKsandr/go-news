@@ -17,12 +17,7 @@ func main() {
 
 	log.Println("Server is running on port:", port)
 
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("/", IndexHandler)
-
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
+	mux := routes()
 
 	log.Fatalln(http.ListenAndServe(":"+port, mux))
 }
