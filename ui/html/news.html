@@ -1,0 +1,17 @@
+{{template "base" .}}
+
+{{define "title"}}Новости{{end}}
+
+{{define "content"}}
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row row-cols-4">
+            {{range 20}}
+                <div class="col mb-4">
+                    {{template "news-card" .}}
+                </div>
+            {{end}}
+        </div>
+    </div>
+</div>
+{{end}}

@@ -9,6 +9,10 @@ func routes() *http.ServeMux {
 
 	mux.HandleFunc("/contact", ContactHandler)
 
+	mux.HandleFunc("/news", NewsHandler)
+
+	mux.HandleFunc("/news/{id}", NewsDetailHandler)
+
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
