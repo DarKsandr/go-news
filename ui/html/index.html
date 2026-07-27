@@ -135,6 +135,7 @@
                     Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took
                     a galley standard dummy text ever since the 1500s, when an unknown printer took a galley...
                 </p>
+                {{ if .TopStory.ID }}
                 <div class="bg-light p-4 rounded">
                     <div class="news-2">
                         <h3 class="mb-4">Top Story</h3>
@@ -142,19 +143,19 @@
                     <div class="row g-4 align-items-center">
                         <div class="col-md-6">
                             <div class="rounded overflow-hidden">
-                                <img src="/static/img/news-2.webp" class="img-fluid rounded img-zoomin w-100" alt="">
+                                <img src="{{.TopStory.ImageUrl}}" class="img-fluid rounded img-zoomin w-100" alt="{{.TopStory.Title}}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex flex-column">
-                                <a href="#" class="h3">Stoneman Clandestine Ukrainian claims successes against
-                                    Russian.</a>
-                                <p class="mb-0 fs-5"><i class="fa fa-clock"> 06 minute read</i> </p>
-                                <p class="mb-0 fs-5"><i class="fa fa-eye"> 3.5k Views</i></p>
+                                <a href="/news/{{.TopStory.ID}}" class="h3">{{.TopStory.Title}}</a>
+                                <p class="mb-0 fs-5"><i class="fa fa-clock"> {{.TopStory.ReadTime}} minute read</i> </p>
+                                <p class="mb-0 fs-5"><i class="fa fa-eye"> {{.TopStory.Views}} Views</i></p>
                             </div>
                         </div>
                     </div>
                 </div>
+                {{end}}
             </div>
             <div class="col-lg-5 col-xl-4">
                 <div class="bg-light rounded p-4 pt-0">
@@ -313,88 +314,31 @@
 
 
 <!-- Latest News Start -->
+ {{if .LatestNews}}
 <div class="container-fluid latest-news py-5">
     <div class="container py-5">
         <h2 class="mb-4">Latest News</h2>
         <div class="latest-news-carousel owl-carousel">
+            {{range .LatestNews}}
             <div class="latest-news-item">
                 <div class="bg-light rounded">
                     <div class="rounded-top overflow-hidden">
-                        <img src="/static/img/news-7.webp" class="img-zoomin img-fluid rounded-top w-100" alt="">
+                        <img src="{{.ImageUrl}}" class="img-zoomin img-fluid rounded-top w-100" alt="{{.Title}}">
                     </div>
                     <div class="d-flex flex-column p-4">
-                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of...</a>
+                        <a href="/news/{{.ID}}" class="h4">{{.Title}}</a>
                         <div class="d-flex justify-content-between">
-                            <a href="#" class="small text-body link-hover">by Willum Skeem</a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                2024</small>
+                            <a href="#" class="small text-body link-hover">by {{.User.Name}}</a>
+                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i>{{.CreatedAt.Format "Jan 2, 2006"}}</small>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="latest-news-item">
-                <div class="bg-light rounded">
-                    <div class="rounded-top overflow-hidden">
-                        <img src="/static/img/news-6.webp" class="img-zoomin img-fluid rounded-top w-100" alt="">
-                    </div>
-                    <div class="d-flex flex-column p-4">
-                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of...</a>
-                        <div class="d-flex justify-content-between">
-                            <a href="#" class="small text-body link-hover">by Willum Skeem</a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="latest-news-item">
-                <div class="bg-light rounded">
-                    <div class="rounded-top overflow-hidden">
-                        <img src="/static/img/news-3.webp" class="img-zoomin img-fluid rounded-top w-100" alt="">
-                    </div>
-                    <div class="d-flex flex-column p-4">
-                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of...</a>
-                        <div class="d-flex justify-content-between">
-                            <a href="#" class="small text-body link-hover">by Willum Skeem</a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="latest-news-item">
-                <div class="bg-light rounded">
-                    <div class="rounded-top overflow-hidden">
-                        <img src="/static/img/news-4.webp" class="img-zoomin img-fluid rounded-top w-100" alt="">
-                    </div>
-                    <div class="d-flex flex-column p-4">
-                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of...</a>
-                        <div class="d-flex justify-content-between">
-                            <a href="#" class="small text-body link-hover">by Willum Skeem</a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="latest-news-item">
-                <div class="bg-light rounded">
-                    <div class="rounded-top overflow-hidden">
-                        <img src="/static/img/news-5.webp" class="img-zoomin img-fluid rounded-top w-100" alt="">
-                    </div>
-                    <div class="d-flex flex-column p-4">
-                        <a href="#" class="h4 ">Lorem Ipsum is simply dummy text of...</a>
-                        <div class="d-flex justify-content-between">
-                            <a href="#" class="small text-body link-hover">by Willum Skeem</a>
-                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{end}}
         </div>
     </div>
 </div>
+{{end}}
 <!-- Latest News End -->
 
 
