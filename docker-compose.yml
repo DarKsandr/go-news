@@ -7,6 +7,19 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "${DB_PORT}:3306"
+      - "${MYSQL_PORT}:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: news-app
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "${PORT}:${PORT}"
+    tty: true
