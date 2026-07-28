@@ -148,19 +148,41 @@ func NewsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func NewsDetailHandler(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	db := pkg.OpenDB()
+
+	var news pkg.News
+
+	//TODO горутины
+	if err := db.Preload("User").First(&news, id).Error; err != nil {
+		NotFoundHandler(w, r)
+		return
+	}
+
+	var AlsoLike []pkg.News
+	if err := db.Order("RAND()").Limit(2).Find(&AlsoLike).Error; err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+
+	data := map[string]any{
+		"News":     news,
+		"Content":  template.HTML(news.Content),
+		"AlsoLike": AlsoLike,
+	}
+
 	files := []string{
 		"./ui/html/news-detail.html",
 		"./ui/html/base.html",
 	}
-
-	// id := r.PathValue("id")
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
 		ErrorHandler(w, r, err)
 		return
 	}
-	if err := tmpl.Execute(w, nil); err != nil {
+	if err := tmpl.Execute(w, data); err != nil {
 		ErrorHandler(w, r, err)
 		return
 	}
