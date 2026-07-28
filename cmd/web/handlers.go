@@ -2,8 +2,10 @@ package main
 
 import (
 	"html/template"
+	"log"
 	"main/pkg"
 	"net/http"
+	"sync"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,23 +22,55 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	db := pkg.OpenDB()
 
-	//TODO переписать на горутины
-	LatestNews := []*pkg.News{}
-	db.Preload("User").Order("created_at desc").Limit(5).Find(&LatestNews)
+	var (
+		LatestNews []*pkg.News
+		TopStory   pkg.News
+	)
+	const jobs = 2
 
-	TopStory := pkg.News{}
-	db.Order("RAND()").First(&TopStory)
+	errCh := make(chan error, jobs)
+	var wg sync.WaitGroup
+	wg.Add(jobs)
+
+	go func() {
+		defer wg.Done()
+		if err := db.Preload("User").Order("created_at desc").Limit(5).Find(&LatestNews).Error; err != nil {
+			errCh <- err
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		if err := db.Order("RAND()").First(&TopStory).Error; err != nil {
+			errCh <- err
+		}
+	}()
+
+	wg.Wait()
+	close(errCh)
+
+	if err, ok := <-errCh; ok {
+		ErrorHandler(w, r, err)
+		return
+	}
 
 	data := map[string]any{
 		"LatestNews": LatestNews,
 		"TopStory":   TopStory,
 	}
 
-	tmpl := template.Must(template.ParseFiles(files...))
-	tmpl.Execute(w, data)
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+	if err := tmpl.Execute(w, data); err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
 }
 
-func NotFoundHandler(w http.ResponseWriter, _ *http.Request) {
+func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 	files := []string{
 		"./ui/html/404.html",
 		"./ui/html/base.html",
@@ -44,8 +78,38 @@ func NotFoundHandler(w http.ResponseWriter, _ *http.Request) {
 
 	w.WriteHeader(http.StatusNotFound)
 
-	tmpl := template.Must(template.ParseFiles(files...))
-	tmpl.Execute(w, nil)
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+	if err := tmpl.Execute(w, nil); err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+}
+
+func ErrorHandler(w http.ResponseWriter, _ *http.Request, err error) {
+	log.Println(err)
+
+	files := []string{
+		"./ui/html/500.html",
+		"./ui/html/base.html",
+	}
+
+	w.WriteHeader(http.StatusInternalServerError)
+
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "template error", http.StatusInternalServerError)
+		return
+	}
+	if err := tmpl.Execute(w, nil); err != nil {
+		log.Println(err)
+		http.Error(w, "template error", http.StatusInternalServerError)
+		return
+	}
 }
 
 func ContactHandler(w http.ResponseWriter, r *http.Request) {
@@ -54,8 +118,15 @@ func ContactHandler(w http.ResponseWriter, r *http.Request) {
 		"./ui/html/base.html",
 	}
 
-	tmpl := template.Must(template.ParseFiles(files...))
-	tmpl.Execute(w, nil)
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+	if err := tmpl.Execute(w, nil); err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
 }
 
 func NewsHandler(w http.ResponseWriter, r *http.Request) {
@@ -65,8 +136,15 @@ func NewsHandler(w http.ResponseWriter, r *http.Request) {
 		"./ui/html/news-card.html",
 	}
 
-	tmpl := template.Must(template.ParseFiles(files...))
-	tmpl.Execute(w, nil)
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+	if err := tmpl.Execute(w, nil); err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
 }
 
 func NewsDetailHandler(w http.ResponseWriter, r *http.Request) {
@@ -77,6 +155,13 @@ func NewsDetailHandler(w http.ResponseWriter, r *http.Request) {
 
 	// id := r.PathValue("id")
 
-	tmpl := template.Must(template.ParseFiles(files...))
-	tmpl.Execute(w, nil)
+	tmpl, err := template.ParseFiles(files...)
+	if err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+	if err := tmpl.Execute(w, nil); err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
 }
