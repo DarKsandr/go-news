@@ -5,7 +5,8 @@ import (
 	"log"
 	"main/pkg"
 	"net/http"
-	"sync"
+
+	"golang.org/x/sync/errgroup"
 )
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
@@ -26,30 +27,17 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		LatestNews []*pkg.News
 		TopStory   pkg.News
 	)
-	const jobs = 2
+	var g errgroup.Group
 
-	errCh := make(chan error, jobs)
-	var wg sync.WaitGroup
-	wg.Add(jobs)
+	g.Go(func() error {
+		return db.Preload("User").Order("created_at desc").Limit(5).Find(&LatestNews).Error
+	})
 
-	go func() {
-		defer wg.Done()
-		if err := db.Preload("User").Order("created_at desc").Limit(5).Find(&LatestNews).Error; err != nil {
-			errCh <- err
-		}
-	}()
+	g.Go(func() error {
+		return db.Order("RAND()").First(&TopStory).Error
+	})
 
-	go func() {
-		defer wg.Done()
-		if err := db.Order("RAND()").First(&TopStory).Error; err != nil {
-			errCh <- err
-		}
-	}()
-
-	wg.Wait()
-	close(errCh)
-
-	if err, ok := <-errCh; ok {
+	if err := g.Wait(); err != nil {
 		ErrorHandler(w, r, err)
 		return
 	}
@@ -154,7 +142,6 @@ func NewsDetailHandler(w http.ResponseWriter, r *http.Request) {
 
 	var news pkg.News
 
-	//TODO горутины
 	if err := db.Preload("User").First(&news, id).Error; err != nil {
 		NotFoundHandler(w, r)
 		return
