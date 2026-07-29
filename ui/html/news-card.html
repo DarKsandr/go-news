@@ -1,18 +1,14 @@
 {{ define "news-card" }}
-<div class="whats-item">
-    <div class="bg-light rounded">
+<div class="bg-light rounded">
         <div class="rounded-top overflow-hidden">
-            <img src="/static/img/news-4.webp" class="img-zoomin img-fluid rounded-top w-100" alt="">
+            <img src="{{.ImageUrl}}" class="img-zoomin img-fluid rounded-top w-100" alt="{{.Title}}">
         </div>
         <div class="d-flex flex-column p-4">
-            <a href="#" class="h4">There are many variations of passages of Lorem Ipsum
-                available,</a>
+            <a href="/news/{{.ID}}" class="h4">{{.Title}}</a>
             <div class="d-flex justify-content-between">
-                <a href="#" class="small text-body link-hover">by Willium Smith</a>
-                <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> Dec 9,
-                    2024</small>
+                <a href="#" class="small text-body link-hover">by {{.User.Name}}</a>
+                <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i>{{.CreatedAt.Format "Jan 2, 2006"}}</small>
             </div>
         </div>
     </div>
-</div>
 {{ end }}

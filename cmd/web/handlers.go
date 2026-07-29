@@ -25,7 +25,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 	var (
 		LatestNews []*pkg.News
-		TopStory   pkg.News
+		TopStory   *pkg.News
+		MostViews  []*pkg.News
 	)
 	var g errgroup.Group
 
@@ -37,6 +38,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return db.Order("RAND()").First(&TopStory).Error
 	})
 
+	g.Go(func() error {
+		return db.Preload("User").Order("`views` desc").Limit(5).Find(&MostViews).Error
+	})
+
 	if err := g.Wait(); err != nil {
 		ErrorHandler(w, r, err)
 		return
@@ -45,6 +50,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	data := map[string]any{
 		"LatestNews": LatestNews,
 		"TopStory":   TopStory,
+		"MostViews":  MostViews,
 	}
 
 	tmpl, err := template.ParseFiles(files...)
@@ -124,12 +130,42 @@ func NewsHandler(w http.ResponseWriter, r *http.Request) {
 		"./ui/html/news-card.html",
 	}
 
+	db := pkg.OpenDB()
+	var g errgroup.Group
+
+	News := []*pkg.News{}
+	var NewsTotal int64
+
+	g.Go(func() error {
+		return db.Preload("User").Scopes(pkg.Paginate(r)).Order("created_at desc").Find(&News).Error
+	})
+
+	g.Go(func() error {
+		return db.Model(pkg.News{}).Count(&NewsTotal).Error
+	})
+
+	if err := g.Wait(); err != nil {
+		ErrorHandler(w, r, err)
+		return
+	}
+
+	page, _, Pages, TotalPages, PrevPage, NextPage := pkg.PaginateData(r, int(NewsTotal))
+
+	data := map[string]any{
+		"News":        News,
+		"Pages":       Pages,
+		"TotalPages":  TotalPages,
+		"CurrentPage": page,
+		"PrevPage":    PrevPage,
+		"NextPage":    NextPage,
+	}
+
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
 		ErrorHandler(w, r, err)
 		return
 	}
-	if err := tmpl.Execute(w, nil); err != nil {
+	if err := tmpl.Execute(w, data); err != nil {
 		ErrorHandler(w, r, err)
 		return
 	}

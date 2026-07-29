@@ -6,12 +6,29 @@
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="row row-cols-4">
-            {{range 20}}
-                <div class="col mb-4">
+            {{range .News}}
+            <div class="col mb-4">
+                <div class="whats-item">
                     {{template "news-card" .}}
                 </div>
+            </div>
             {{end}}
         </div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center flex-wrap">
+                <li class="page-item {{if eq .CurrentPage 1 }}disabled{{end}}">
+                    <a class="page-link" href="/news?page={{.PrevPage}}">Previous</a>
+                </li>
+                {{range .Pages}}
+                <li class="page-item {{if eq . $.CurrentPage}}active{{end}}">
+                    <a class="page-link" href="/news?page={{.}}">{{.}}</a>
+                </li>
+                {{end}}
+                <li class="page-item {{if eq .CurrentPage .TotalPages }}disabled{{end}}">
+                    <a class="page-link" href="/news?page={{.NextPage}}">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 {{end}}
