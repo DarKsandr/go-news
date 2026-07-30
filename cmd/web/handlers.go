@@ -75,7 +75,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	g.Go(func() error {
-		return db.Order("RAND()").Limit(4).Find(&Features).Error
+		return db.Preload("Category").Order("RAND()").Limit(4).Find(&Features).Error
 	})
 
 	if err := g.Wait(); err != nil {

@@ -25,6 +25,7 @@ func main() {
 
 	users := []*pkg.User{}
 	news := []*pkg.News{}
+	categories := []*pkg.Category{}
 
 	userAvatar := []string{
 		"/static/img/features-fashion.webp",
@@ -55,6 +56,22 @@ func main() {
 	}
 	db.Create(&users)
 
+	log.Println("Заполняем категории")
+	categoriesName := []string{
+		"Sports",
+		"Magazine",
+		"Lifestyle",
+		"Politician",
+		"Technology",
+		"Intertainment",
+	}
+	for _, name := range categoriesName {
+		categories = append(categories, &pkg.Category{
+			Name: name,
+		})
+	}
+	db.Create(&categories)
+
 	log.Println("Заполняем новости")
 	for range 1000 {
 		news = append(news, &pkg.News{
@@ -65,6 +82,7 @@ func main() {
 			Views:      rand.Intn(1000),
 			ShareCount: rand.Intn(100),
 			UserID:     users[rand.Intn(len(users)-1)].ID,
+			CategoryID: categories[rand.Intn(len(categories)-1)].ID,
 		})
 	}
 	db.Create(&news)
