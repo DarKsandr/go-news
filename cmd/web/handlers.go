@@ -58,6 +58,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		LatestNews []*pkg.News
 		TopStory   *pkg.News
 		MostViews  []*pkg.News
+		Features   []*pkg.News
 	)
 	var g errgroup.Group
 
@@ -73,6 +74,10 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return db.Preload("User").Order("`views` desc").Limit(5).Find(&MostViews).Error
 	})
 
+	g.Go(func() error {
+		return db.Order("RAND()").Limit(4).Find(&Features).Error
+	})
+
 	if err := g.Wait(); err != nil {
 		ErrorHandler(w, r, err)
 		return
@@ -84,6 +89,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		"LatestNews": LatestNews,
 		"TopStory":   TopStory,
 		"MostViews":  MostViews,
+		"Features":   Features,
 	}
 
 	tmpl, err := template.ParseFiles(files...)
