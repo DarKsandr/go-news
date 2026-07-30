@@ -265,690 +265,72 @@
                     <div class="d-flex flex-column flex-md-row justify-content-md-between border-bottom mb-4">
                         <h1 class="mb-4">What’s New</h1>
                         <ul class="nav nav-pills d-inline-flex text-center">
+                            {{range $index, $element := .Data.WhatNew}}
                             <li class="nav-item mb-3">
-                                <a class="d-flex py-2 bg-light rounded-pill active me-2" data-bs-toggle="pill"
-                                    href="#tab-1">
-                                    <span class="text-dark" style="width: 100px;">Sports</span>
+                                <a class="d-flex py-2 bg-light rounded-pill {{if eq $index 0}}active{{end}} me-2" data-bs-toggle="pill"
+                                    href="#tab-{{.ID}}">
+                                    <span class="text-dark" style="width: 100px;">{{.Name}}</span>
                                 </a>
                             </li>
-                            <li class="nav-item mb-3">
-                                <a class="d-flex py-2 bg-light rounded-pill me-2" data-bs-toggle="pill" href="#tab-2">
-                                    <span class="text-dark" style="width: 100px;">Magazine</span>
-                                </a>
-                            </li>
-                            <li class="nav-item mb-3">
-                                <a class="d-flex py-2 bg-light rounded-pill me-2" data-bs-toggle="pill" href="#tab-3">
-                                    <span class="text-dark" style="width: 100px;">Politics</span>
-                                </a>
-                            </li>
-                            <li class="nav-item mb-3">
-                                <a class="d-flex py-2 bg-light rounded-pill me-2" data-bs-toggle="pill" href="#tab-4">
-                                    <span class="text-dark" style="width: 100px;">Technology</span>
-                                </a>
-                            </li>
-                            <li class="nav-item mb-3">
-                                <a class="d-flex py-2 bg-light rounded-pill me-2" data-bs-toggle="pill" href="#tab-5">
-                                    <span class="text-dark" style="width: 100px;">Fashion</span>
-                                </a>
-                            </li>
+                            {{end}}
                         </ul>
                     </div>
                     <div class="tab-content mb-4">
-                        <div id="tab-1" class="tab-pane fade show p-0 active">
+                        {{range $index, $element := .Data.WhatNew}}
+                        <div id="tab-{{.ID}}" class="tab-pane fade show p-0 {{if eq $index 0}}active{{end}}">
                             <div class="row g-4">
                                 <div class="col-lg-8">
                                     <div class="position-relative rounded overflow-hidden">
-                                        <img src="/static/img/news-1.webp" class="img-zoomin img-fluid rounded w-100"
+                                        <img src="{{(index .News 0).ImageUrl}}" class="img-zoomin img-fluid rounded w-100"
                                             alt="">
                                         <div class="position-absolute text-white px-4 py-2 bg-primary rounded"
                                             style="top: 20px; right: 20px;">
-                                            Sports
+                                            {{.Name}}
                                         </div>
                                     </div>
                                     <div class="my-4">
-                                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of the printing and
-                                            typesetting industry.</a>
+                                        <a href="/news/{{(index .News 0).ID}}" class="h4">{{(index .News 0).Title}}</a>
                                     </div>
                                     <div class="d-flex justify-content-between">
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> 06
+                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> {{(index .News 0).ReadTime}}
                                             minute read</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> 3.5k
+                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> {{(index .News 0).Views}}
                                             Views</a>
                                         <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i>
                                             05 Comment</a>
-                                        <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k
-                                            Share</a>
-                                    </div>
-                                    <p class="my-4">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                        industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has
-                                        been the industry's standard dummy..
-                                    </p>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="row g-4">
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-3.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Sports</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-4.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Sports</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-5.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Sports</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-6.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Sports</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-7.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Magazine</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab-2" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-8">
-                                    <div class="position-relative rounded overflow-hidden">
-                                        <img src="/static/img/news-1.webp" class="img-zoomin img-fluid rounded w-100"
-                                            alt="">
-                                        <div class="position-absolute text-white px-4 py-2 bg-primary rounded"
-                                            style="top: 20px; right: 20px;">
-                                            Magazine
-                                        </div>
-                                    </div>
-                                    <div class="my-3">
-                                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of the printing and
-                                            typesetting industry.</a>
-                                    </div>
-                                    <p class="mt-4">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                        industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has
-                                        been the industry's standard dummy..
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> 06
-                                            minute read</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> 3.5k
-                                            Views</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i>
-                                            05 Comment</a>
-                                        <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k
+                                        <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> {{(index .News 0).ShareCount}}
                                             Share</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="row g-4">
+                                        {{range $index2, $element2 := $element.News}}
+                                        {{if ne $index2 0}}
                                         <div class="col-12">
                                             <div class="row g-4 align-items-center">
                                                 <div class="col-5">
                                                     <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-3.webp"
+                                                        <img src="{{$element2.ImageUrl}}"
                                                             class="img-zoomin img-fluid rounded w-100" alt="">
                                                     </div>
                                                 </div>
                                                 <div class="col-7">
                                                     <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Magazine</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
+                                                        <p class="text-uppercase mb-2">{{$element.Name}}</p>
+                                                        <a href="/news/{{$element2.ID}}" class="h6">{{$element2.Title}}</a>
                                                         <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
+                                                                class="fas fa-calendar-alt me-1"></i>{{.CreatedAt.Format "Jan 2, 2006"}}</small>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-4.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Magazine</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-5.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Magazine</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-6.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Magazine</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-7.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Magazine</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {{end}}
+                                        {{end}}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="tab-3" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-8">
-                                    <div class="position-relative rounded overflow-hidden">
-                                        <img src="/static/img/news-1.webp" class="img-zoomin img-fluid rounded w-100"
-                                            alt="">
-                                        <div class="position-absolute text-white px-4 py-2 bg-primary rounded"
-                                            style="top: 20px; right: 20px;">
-                                            Politics
-                                        </div>
-                                    </div>
-                                    <div class="my-3">
-                                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of the printing and
-                                            typesetting industry.</a>
-                                    </div>
-                                    <p class="mt-4">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                        industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has
-                                        been the industry's standard dummy..
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> 06
-                                            minute read</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> 3.5k
-                                            Views</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i>
-                                            05 Comment</a>
-                                        <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k
-                                            Share</a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="row g-4">
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-3.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Politics</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-4.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Politics</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-5.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Politics</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-6.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Politics</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-7.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Politics</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab-4" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-8">
-                                    <div class="position-relative rounded overflow-hidden">
-                                        <img src="/static/img/news-1.webp" class="img-zoomin img-fluid rounded w-100"
-                                            alt="">
-                                        <div class="position-absolute text-white px-4 py-2 bg-primary rounded"
-                                            style="top: 20px; right: 20px;">
-                                            Technology
-                                        </div>
-                                    </div>
-                                    <div class="my-3">
-                                        <a href="#" class="h4">Lorem Ipsum is simply dummy text of the printing and
-                                            typesetting industry.</a>
-                                    </div>
-                                    <p class="mt-4">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                        industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has
-                                        been the industry's standard dummy
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> 06
-                                            minute read</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> 3.5k
-                                            Views</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i>
-                                            05 Comment</a>
-                                        <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k
-                                            Share</a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="row g-4">
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-3.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Technology</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-4.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Technology</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-5.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Technology</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-6.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Technology</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-7.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Technology</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="tab-5" class="tab-pane fade show p-0">
-                            <div class="row g-4">
-                                <div class="col-lg-8">
-                                    <div class="position-relative rounded overflow-hidden">
-                                        <img src="/static/img/news-1.webp" class="img-zoomin img-fluid rounded w-100"
-                                            alt="">
-                                        <div class="position-absolute text-white px-4 py-2 bg-primary rounded"
-                                            style="top: 20px; right: 20px;">
-                                            Fashion
-                                        </div>
-                                    </div>
-                                    <div class="my-3">
-                                        <a href="#" class="h4">World Happiness Report 2023: What's the highway to
-                                            happiness?</a>
-                                    </div>
-                                    <p class="mt-4">Lorem Ipsum is simply dummy text of the printing and typesetting
-                                        industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has
-                                        been the industry's standard dummy
-                                    </p>
-                                    <div class="d-flex justify-content-between">
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> 06
-                                            minute read</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> 3.5k
-                                            Views</a>
-                                        <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i>
-                                            05 Comment</a>
-                                        <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k
-                                            Share</a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="row g-4">
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-3.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Fashion</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-4.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Fashion</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-5.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Fashion</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-6.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Fashion</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="/static/img/news-7.webp"
-                                                            class="img-zoomin img-fluid rounded w-100" alt="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2">Fashion</p>
-                                                        <a href="#" class="h6">Get the best speak market, news.</a>
-                                                        <small class="text-body d-block"><i
-                                                                class="fas fa-calendar-alt me-1"></i> Dec 9,
-                                                            2024</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {{end}}
                     </div>
                     {{if .Data.MostViews}}
                     <div class="border-bottom mb-4">

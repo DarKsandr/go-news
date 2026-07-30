@@ -32,4 +32,5 @@ type News struct {
 type Category struct {
 	ID   int
 	Name string
+	News []News
 }

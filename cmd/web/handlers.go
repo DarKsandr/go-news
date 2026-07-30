@@ -18,31 +18,52 @@ type Footer struct {
 }
 
 type Page struct {
-	Data map[string]any
+	Data       map[string]any
+	Categories []*pkg.Category
 	*Header
 	*Footer
 }
 
-func NewPage() *Page {
+func NewPage() (*Page, error) {
 	db := pkg.OpenDB()
-	RecentPosts := []*pkg.News{}
+	var g errgroup.Group
 
-	db.Order("created_at desc").Limit(2).Find(&RecentPosts)
+	RecentPosts := []*pkg.News{}
+	Categories := []*pkg.Category{}
+
+	g.Go(func() error {
+		return db.Order("created_at desc").Limit(2).Find(&RecentPosts).Error
+	})
+
+	g.Go(func() error {
+		return db.Find(&Categories).Error
+	})
+
+	if err := g.Wait(); err != nil {
+		return &Page{}, err
+	}
 
 	return &Page{
-		Data: map[string]any{},
+		Data:       map[string]any{},
+		Categories: Categories,
 		Header: &Header{
 			ActiveMenu: "",
 		},
 		Footer: &Footer{
 			RecentPosts,
 		},
-	}
+	}, nil
 }
 
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	data, err := NewPage()
+	if err != nil {
+		ErrorHandler(w, r, err, data)
+		return
+	}
+
 	if r.URL.Path != "/" {
-		NotFoundHandler(w, r)
+		NotFoundHandler(w, r, data)
 		return
 	}
 
@@ -59,6 +80,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		TopStory   *pkg.News
 		MostViews  []*pkg.News
 		Features   []*pkg.News
+		WhatNew    []*pkg.Category
 	)
 	var g errgroup.Group
 
@@ -78,32 +100,46 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return db.Preload("Category").Order("RAND()").Limit(4).Find(&Features).Error
 	})
 
+	WhatNew = data.Categories
+	for _, category := range WhatNew {
+		g.Go(func() error {
+			return db.Limit(6).Where("category_id = ?", category.ID).Find(&category.News).Error
+		})
+	}
+
 	if err := g.Wait(); err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 
-	data := NewPage()
+	WhatNewFiltered := []*pkg.Category{}
+	for _, v := range WhatNew {
+		if len(v.News) > 0 {
+			WhatNewFiltered = append(WhatNewFiltered, v)
+		}
+	}
+
 	data.Header.ActiveMenu = "home"
 	data.Data = map[string]any{
 		"LatestNews": LatestNews,
 		"TopStory":   TopStory,
 		"MostViews":  MostViews,
 		"Features":   Features,
+		"WhatNew":    WhatNewFiltered,
 	}
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 	if err := tmpl.Execute(w, data); err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 }
 
-func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+func NotFoundHandler(w http.ResponseWriter, r *http.Request, data *Page) {
 	files := []string{
 		"./ui/html/404.html",
 		"./ui/html/base.html",
@@ -111,20 +147,18 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusNotFound)
 
-	data := NewPage()
-
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 	if err := tmpl.Execute(w, data); err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 }
 
-func ErrorHandler(w http.ResponseWriter, _ *http.Request, err error) {
+func ErrorHandler(w http.ResponseWriter, _ *http.Request, err error, data *Page) {
 	log.Println(err)
 
 	files := []string{
@@ -133,8 +167,6 @@ func ErrorHandler(w http.ResponseWriter, _ *http.Request, err error) {
 	}
 
 	w.WriteHeader(http.StatusInternalServerError)
-
-	data := NewPage()
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
@@ -150,22 +182,25 @@ func ErrorHandler(w http.ResponseWriter, _ *http.Request, err error) {
 }
 
 func ContactHandler(w http.ResponseWriter, r *http.Request) {
+	data, err := NewPage()
+	if err != nil {
+		ErrorHandler(w, r, err, data)
+		return
+	}
+	data.Header.ActiveMenu = "contact"
+
 	files := []string{
 		"./ui/html/contact.html",
 		"./ui/html/base.html",
 	}
 
 	tmpl, err := template.ParseFiles(files...)
-
-	data := NewPage()
-	data.Header.ActiveMenu = "contact"
-
 	if err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 	if err := tmpl.Execute(w, data); err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 }
@@ -180,6 +215,13 @@ func NewsHandler(w http.ResponseWriter, r *http.Request) {
 	db := pkg.OpenDB()
 	var g errgroup.Group
 
+	data, err := NewPage()
+	if err != nil {
+		ErrorHandler(w, r, err, data)
+		return
+	}
+	data.Header.ActiveMenu = "news"
+
 	News := []*pkg.News{}
 	var NewsTotal int64
 
@@ -192,14 +234,12 @@ func NewsHandler(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err := g.Wait(); err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 
 	page, _, Pages, TotalPages, PrevPage, NextPage := pkg.PaginateData(r, int(NewsTotal))
 
-	data := NewPage()
-	data.Header.ActiveMenu = "news"
 	data.Data = map[string]any{
 		"News":        News,
 		"Pages":       Pages,
@@ -211,11 +251,11 @@ func NewsHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 	if err := tmpl.Execute(w, data); err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 }
@@ -227,18 +267,22 @@ func NewsDetailHandler(w http.ResponseWriter, r *http.Request) {
 
 	var news pkg.News
 
+	data, err := NewPage()
+	if err != nil {
+		ErrorHandler(w, r, err, data)
+		return
+	}
+
 	if err := db.Preload("User").First(&news, id).Error; err != nil {
-		NotFoundHandler(w, r)
+		NotFoundHandler(w, r, data)
 		return
 	}
 
 	var AlsoLike []pkg.News
 	if err := db.Order("RAND()").Limit(2).Find(&AlsoLike).Error; err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
-
-	data := NewPage()
 
 	data.Data = map[string]any{
 		"News":     news,
@@ -253,11 +297,11 @@ func NewsDetailHandler(w http.ResponseWriter, r *http.Request) {
 
 	tmpl, err := template.ParseFiles(files...)
 	if err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 	if err := tmpl.Execute(w, data); err != nil {
-		ErrorHandler(w, r, err)
+		ErrorHandler(w, r, err, data)
 		return
 	}
 }

@@ -24,7 +24,9 @@ func InitDB() (*gorm.DB, error) {
 		database := os.Getenv("DB_NAME")
 
 		dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", user, pass, host, port, database)
-		dbInstance, dbErr = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		dbInstance, dbErr = gorm.Open(mysql.Open(dsn), &gorm.Config{
+			// Logger: logger.Default.LogMode(logger.Info),
+		})
 	})
 
 	if dbErr != nil {
