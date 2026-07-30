@@ -18,6 +18,7 @@ func main() {
 	tables := []any{
 		&pkg.User{},
 		&pkg.News{},
+		&pkg.Category{},
 	}
 
 	db.Migrator().DropTable(tables...)
