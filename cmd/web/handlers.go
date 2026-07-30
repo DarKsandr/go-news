@@ -5,6 +5,7 @@ import (
 	"log"
 	"main/pkg"
 	"net/http"
+	"time"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -19,6 +20,7 @@ type Footer struct {
 
 type Page struct {
 	Data       map[string]any
+	Date       time.Time
 	Categories []*pkg.Category
 	*Header
 	*Footer
@@ -45,6 +47,7 @@ func NewPage() (*Page, error) {
 
 	return &Page{
 		Data:       map[string]any{},
+		Date:       time.Now(),
 		Categories: Categories,
 		Header: &Header{
 			ActiveMenu: "",
