@@ -4,6 +4,7 @@ import (
 	"log"
 	"main/pkg"
 	"math/rand"
+	"time"
 
 	"github.com/Pallinder/go-randomdata"
 )
@@ -74,6 +75,10 @@ func main() {
 
 	log.Println("Заполняем новости")
 	for range 1000 {
+		t, err := time.Parse(randomdata.DateOutputLayout, randomdata.FullDate())
+		if err != nil {
+			panic(err)
+		}
 		news = append(news, &pkg.News{
 			Title:      randomdata.SillyName(),
 			Content:    randomdata.Paragraph(),
@@ -83,6 +88,8 @@ func main() {
 			ShareCount: rand.Intn(100),
 			UserID:     users[rand.Intn(len(users)-1)].ID,
 			CategoryID: categories[rand.Intn(len(categories)-1)].ID,
+			CreatedAt:  t,
+			UpdatedAt:  t,
 		})
 	}
 	db.Create(&news)
