@@ -135,7 +135,7 @@
                     Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took
                     a galley standard dummy text ever since the 1500s, when an unknown printer took a galley...
                 </p>
-                {{ if .TopStory.ID }}
+                {{ if .Data.TopStory.ID }}
                 <div class="bg-light p-4 rounded">
                     <div class="news-2">
                         <h3 class="mb-4">Top Story</h3>
@@ -143,14 +143,14 @@
                     <div class="row g-4 align-items-center">
                         <div class="col-md-6">
                             <div class="rounded overflow-hidden">
-                                <img src="{{.TopStory.ImageUrl}}" class="img-fluid rounded img-zoomin w-100" alt="{{.TopStory.Title}}">
+                                <img src="{{.Data.TopStory.ImageUrl}}" class="img-fluid rounded img-zoomin w-100" alt="{{.Data.TopStory.Title}}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex flex-column">
-                                <a href="/news/{{.TopStory.ID}}" class="h3">{{.TopStory.Title}}</a>
-                                <p class="mb-0 fs-5"><i class="fa fa-clock"> {{.TopStory.ReadTime}} minute read</i> </p>
-                                <p class="mb-0 fs-5"><i class="fa fa-eye"> {{.TopStory.Views}} Views</i></p>
+                                <a href="/news/{{.Data.TopStory.ID}}" class="h3">{{.Data.TopStory.Title}}</a>
+                                <p class="mb-0 fs-5"><i class="fa fa-clock"> {{.Data.TopStory.ReadTime}} minute read</i> </p>
+                                <p class="mb-0 fs-5"><i class="fa fa-eye"> {{.Data.TopStory.Views}} Views</i></p>
                             </div>
                         </div>
                     </div>
@@ -314,12 +314,12 @@
 
 
 <!-- Latest News Start -->
- {{if .LatestNews}}
+ {{if .Data.LatestNews}}
 <div class="container-fluid latest-news py-5">
     <div class="container py-5">
         <h2 class="mb-4">Latest News</h2>
         <div class="latest-news-carousel owl-carousel">
-            {{range .LatestNews}}
+            {{range .Data.LatestNews}}
             <div class="latest-news-item">
                 {{ template "news-card" . }}
             </div>
@@ -1025,12 +1025,12 @@
                             </div>
                         </div>
                     </div>
-                    {{if .MostViews}}
+                    {{if .Data.MostViews}}
                     <div class="border-bottom mb-4">
                         <h2 class="my-4">Most Views News</h2>
                     </div>
                     <div class="whats-carousel owl-carousel">
-                        {{ range .MostViews }}
+                        {{ range .Data.MostViews }}
                             <div class="whats-item">
                                 {{ template "news-card" . }}
                             </div>

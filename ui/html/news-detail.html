@@ -1,34 +1,34 @@
 {{template "base" .}}
 
-{{define "title"}}{{.News.Title}}{{end}}
+{{define "title"}}{{.Data.News.Title}}{{end}}
 
 {{define "content"}}
 <div class="container-fluid py-5">
     <div class="container py-5">
         <ol class="breadcrumb justify-content-start mb-4">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active text-dark">{{.News.Title}}</li>
+            <li class="breadcrumb-item active text-dark">{{.Data.News.Title}}</li>
         </ol>
         <div class="row g-4">
             <div class="col-lg-8">
                 <div class="mb-4">
-                    <h1 class="display-5">{{.News.Title}}</h1>
+                    <h1 class="display-5">{{.Data.News.Title}}</h1>
                 </div>
                 <div class="position-relative rounded overflow-hidden mb-3">
-                    <img src="{{.News.ImageUrl}}" class="img-zoomin img-fluid rounded w-100" alt="{{.News.Title}}">
+                    <img src="{{.Data.News.ImageUrl}}" class="img-zoomin img-fluid rounded w-100" alt="{{.Data.News.Title}}">
                     <!-- <div class="position-absolute text-white px-4 py-2 bg-primary rounded"
                         style="top: 20px; right: 20px;">
                         Busimess
                     </div> -->
                 </div>
                 <div class="d-flex justify-content-between">
-                    <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> {{.News.ReadTime}} minute read</a>
-                    <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> {{.News.Views}} Views</a>
+                    <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> {{.Data.News.ReadTime}} minute read</a>
+                    <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> {{.Data.News.Views}} Views</a>
                     <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i> 05 Comment</a>
-                    <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> {{.News.ShareCount}} Share</a>
+                    <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> {{.Data.News.ShareCount}} Share</a>
                 </div>
                 
-                {{.Content}}
+                {{.Data.Content}}
 
                 <div class="tab-class">
                     <div class="d-flex justify-content-between border-bottom mb-4">
@@ -68,21 +68,21 @@
                         <div class="tab-pane fade show active">
                             <div class="row g-4 align-items-center">
                                 <div class="col-3">
-                                    <img src="{{.News.User.AvatarUrl}}" class="img-fluid w-100 rounded" alt="{{.News.User.Name}}">
+                                    <img src="{{.Data.News.User.AvatarUrl}}" class="img-fluid w-100 rounded" alt="{{.Data.News.User.Name}}">
                                 </div>
                                 <div class="col-9">
-                                    <h3>{{.News.User.Name}}</h3>
-                                    <p class="mb-0">{{.News.User.About}}</p>
+                                    <h3>{{.Data.News.User.Name}}</h3>
+                                    <p class="mb-0">{{.Data.News.User.About}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {{if .AlsoLike}}
+                {{if .Data.AlsoLike}}
                 <div class="bg-light rounded my-4 p-4">
                     <h4 class="mb-4">You Might Also Like</h4>
                     <div class="row g-4">
-                        {{range .AlsoLike}}
+                        {{range .Data.AlsoLike}}
                         <div class="col-lg-6">
                             <div class="d-flex align-items-center p-3 bg-white rounded">
                                 <img src="{{.ImageUrl}}" class="w-50 rounded" alt="{{.Title}}">

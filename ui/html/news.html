@@ -1,12 +1,12 @@
 {{template "base" .}}
 
-{{define "title"}}Новости{{end}}
+{{define "title"}}News{{end}}
 
 {{define "content"}}
 <div class="container-fluid py-5">
     <div class="container py-5">
         <div class="row row-cols-4">
-            {{range .News}}
+            {{range .Data.News}}
             <div class="col mb-4">
                 <div class="whats-item">
                     {{template "news-card" .}}
@@ -16,16 +16,16 @@
         </div>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center flex-wrap">
-                <li class="page-item {{if eq .CurrentPage 1 }}disabled{{end}}">
-                    <a class="page-link" href="/news?page={{.PrevPage}}">Previous</a>
+                <li class="page-item {{if eq .Data.CurrentPage 1 }}disabled{{end}}">
+                    <a class="page-link" href="/news?page={{.Data.PrevPage}}">Previous</a>
                 </li>
-                {{range .Pages}}
-                <li class="page-item {{if eq . $.CurrentPage}}active{{end}}">
+                {{range .Data.Pages}}
+                <li class="page-item {{if eq . $.Data.CurrentPage}}active{{end}}">
                     <a class="page-link" href="/news?page={{.}}">{{.}}</a>
                 </li>
                 {{end}}
-                <li class="page-item {{if eq .CurrentPage .TotalPages }}disabled{{end}}">
-                    <a class="page-link" href="/news?page={{.NextPage}}">Next</a>
+                <li class="page-item {{if eq .Data.CurrentPage .Data.TotalPages }}disabled{{end}}">
+                    <a class="page-link" href="/news?page={{.Data.NextPage}}">Next</a>
                 </li>
             </ul>
         </nav>
