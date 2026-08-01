@@ -12,6 +12,14 @@ func setHeaders(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 }
 
+// NewsGetApiHandler godoc
+// @Summary      Get news list
+// @Description  Returns a paginated list of news items.
+// @Tags         news
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   pkg.NewsApi
+// @Router       /news [get]
 func NewsGetApiHandler(w http.ResponseWriter, r *http.Request) {
 	setHeaders(w)
 

@@ -1,6 +1,11 @@
 package main
 
-import "net/http"
+import (
+	_ "main/docs"
+	"net/http"
+
+	httpSwagger "github.com/swaggo/http-swagger"
+)
 
 func routes() *http.ServeMux {
 	mux := http.NewServeMux()
@@ -16,7 +21,10 @@ func routes() *http.ServeMux {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	//API
-	mux.HandleFunc("GET /api/news", NewsGetApiHandler)
+	mux.HandleFunc("/api/news", NewsGetApiHandler)
+
+	// Swagger UI
+	mux.Handle("/swagger/", httpSwagger.Handler())
 
 	return mux
 }

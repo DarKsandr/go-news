@@ -8,4 +8,9 @@
     go run ./cmd/migrate
 ```
 
+## Генерация Swagger
+```
+    swag init -g ./cmd/web/main.go
+```
+
 [Ссылка на шаблон](https://themewagon.com/themes/newsers/)

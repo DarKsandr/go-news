@@ -1,0 +1,119 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample RESTful API server.",
+        "title": "Blueprint API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api",
+    "paths": {
+        "/news": {
+            "get": {
+                "description": "Returns a paginated list of news items.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "summary": "Get news list",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/pkg.NewsApi"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "pkg.CategoryApi": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "pkg.NewsApi": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "$ref": "#/definitions/pkg.CategoryApi"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "read_time": {
+                    "type": "integer"
+                },
+                "share_count": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/pkg.User"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "views": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg.User": {
+            "type": "object",
+            "properties": {
+                "about": {
+                    "type": "string"
+                },
+                "avatar_url": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
