@@ -22,6 +22,7 @@ func routes() *http.ServeMux {
 
 	//API
 	mux.HandleFunc("GET /api/news", NewsGetApiHandler)
+	mux.HandleFunc("POST /api/news", NewsCreateApiHandler)
 
 	// Swagger UI
 	mux.Handle("/swagger/", httpSwagger.Handler())

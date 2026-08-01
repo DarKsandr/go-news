@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "API server.",
+        "description": "API server",
         "title": "API",
         "contact": {},
         "version": "1.0"
@@ -10,7 +10,7 @@
     "paths": {
         "/news": {
             "get": {
-                "description": "Returns a paginated list of news items.",
+                "description": "Returns a paginated list of news items",
                 "consumes": [
                     "application/json"
                 ],
@@ -29,6 +29,38 @@
                             "items": {
                                 "$ref": "#/definitions/pkg.NewsApi"
                             }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "summary": "Create news",
+                "parameters": [
+                    {
+                        "description": "News data",
+                        "name": "news",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg.NewsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.NewsApi"
                         }
                     }
                 }
@@ -82,6 +114,47 @@
                 },
                 "user": {
                     "$ref": "#/definitions/pkg.User"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "views": {
+                    "type": "integer"
+                }
+            }
+        },
+        "pkg.NewsRequest": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "content",
+                "image_url",
+                "read_time",
+                "share_count",
+                "title",
+                "user_id",
+                "views"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "read_time": {
+                    "type": "integer"
+                },
+                "share_count": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string",
+                    "minLength": 3
                 },
                 "user_id": {
                     "type": "integer"

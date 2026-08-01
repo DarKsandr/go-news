@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/news": {
             "get": {
-                "description": "Returns a paginated list of news items.",
+                "description": "Returns a paginated list of news items",
                 "consumes": [
                     "application/json"
                 ],
@@ -36,6 +36,38 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/pkg.NewsApi"
                             }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "summary": "Create news",
+                "parameters": [
+                    {
+                        "description": "News data",
+                        "name": "news",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/pkg.NewsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.NewsApi"
                         }
                     }
                 }
@@ -98,6 +130,47 @@ const docTemplate = `{
                 }
             }
         },
+        "pkg.NewsRequest": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "content",
+                "image_url",
+                "read_time",
+                "share_count",
+                "title",
+                "user_id",
+                "views"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "read_time": {
+                    "type": "integer"
+                },
+                "share_count": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string",
+                    "minLength": 3
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "views": {
+                    "type": "integer"
+                }
+            }
+        },
         "pkg.User": {
             "type": "object",
             "properties": {
@@ -131,7 +204,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "API",
-	Description:      "API server.",
+	Description:      "API server",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

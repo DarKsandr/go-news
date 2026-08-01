@@ -36,6 +36,36 @@ definitions:
       views:
         type: integer
     type: object
+  pkg.NewsRequest:
+    properties:
+      category_id:
+        type: integer
+      content:
+        minLength: 3
+        type: string
+      image_url:
+        type: string
+      read_time:
+        type: integer
+      share_count:
+        type: integer
+      title:
+        minLength: 3
+        type: string
+      user_id:
+        type: integer
+      views:
+        type: integer
+    required:
+    - category_id
+    - content
+    - image_url
+    - read_time
+    - share_count
+    - title
+    - user_id
+    - views
+    type: object
   pkg.User:
     properties:
       about:
@@ -53,7 +83,7 @@ definitions:
     type: object
 info:
   contact: {}
-  description: API server.
+  description: API server
   title: API
   version: "1.0"
 paths:
@@ -61,7 +91,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Returns a paginated list of news items.
+      description: Returns a paginated list of news items
       produces:
       - application/json
       responses:
@@ -72,6 +102,27 @@ paths:
               $ref: '#/definitions/pkg.NewsApi'
             type: array
       summary: Get news list
+      tags:
+      - news
+    post:
+      consumes:
+      - application/json
+      description: Create news
+      parameters:
+      - description: News data
+        in: body
+        name: news
+        required: true
+        schema:
+          $ref: '#/definitions/pkg.NewsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pkg.NewsApi'
+      summary: Create news
       tags:
       - news
 swagger: "2.0"
