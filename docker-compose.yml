@@ -22,4 +22,5 @@ services:
       - ./:/app
     ports:
       - "${PORT}:${PORT}"
+      - "40000:40000"
     tty: true
